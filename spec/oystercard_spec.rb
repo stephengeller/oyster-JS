@@ -17,9 +17,9 @@ describe Oystercard do
   end
 
   it 'balance has been reduced by 5' do
-    subject.top_up(20)
+    subject.balance = 20
     subject.deduct(5)
-    expect(subject.balance).to eq 15
+    expect(subject.balance).to eq(15)
   end
 
 end

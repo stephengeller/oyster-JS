@@ -1,5 +1,5 @@
 class Oystercard
-  attr_reader :balance
+  attr_accessor :balance
 
   DEFAULT_BALANCE = 0
   DEFAULT_MAX_BALANCE = 90
@@ -13,4 +13,7 @@ class Oystercard
     @balance += credit
   end
 
+  def deduct(debit)
+    @balance -= debit
+  end
 end
