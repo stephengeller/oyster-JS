@@ -1,12 +1,12 @@
 class Oystercard
-  attr_accessor :balance, :in_use, :max_balance
+
+  attr_reader :balance, :max_balance, :station
 
   DEFAULT_BALANCE = 0
   DEFAULT_MAX_BALANCE = 90
-  def initialize(balance = DEFAULT_BALANCE, max_balance = DEFAULT_MAX_BALANCE, in_use = false)
+  def initialize(balance = DEFAULT_BALANCE, max_balance = DEFAULT_MAX_BALANCE)
     @balance = balance
     @max_balance = max_balance
-    @in_use = in_use
   end
 
   def top_up(credit)
@@ -14,26 +14,35 @@ class Oystercard
     @balance += credit
   end
 
-  def deduct(debit)
-    @balance -= debit
-  end
+
 
   def in_journey?
-    if @in_use == false
-      "Card not in use on journey"
-    else
-      "Card in use on journey"
-    end
+    @station != nil
   end
 
-  def touch_in
-    @in_use = true
-    # "Card is in use on journey"
+  # def in_journey?
+  #   if @in_use == false
+  #     "Card not in use on journey"
+  #   else
+  #     "Card in use on journey"
+  #   end
+  # end
+
+  def touch_in(station)
+    raise "You do not have enough money to travel" if @balance < 1
+    @station = station
   end
-  
-  def touch_out
-    @in_use = false
+
+  def touch_out(fare)
+    deduct(fare)
+    @station = nil
     # "Card is not in use on journey"
+  end
+
+  private
+
+  def deduct(debit)
+    @balance -= debit
   end
 
 end

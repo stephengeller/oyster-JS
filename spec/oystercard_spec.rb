@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
   subject { described_class.new }
+  let(:station) {double :station}
 
   it 'is initialized with a balance of 0' do
     expect(subject.balance).to eq(0)
@@ -11,10 +12,6 @@ describe Oystercard do
     expect(subject.max_balance).to eq(90)
   end
 
-  it 'tops up' do
-    expect(subject).to respond_to(:top_up).with(1).argument
-  end
-  
   it 'balance has been topped up with 5' do
     subject.top_up(5)
     expect(subject.balance).to eq 5
@@ -25,34 +22,50 @@ describe Oystercard do
   end
 
   it 'balance has been reduced by 5' do
-    subject.balance = 20
-    subject.deduct(5)
+    subject.top_up(20)
+    subject.touch_in(station)
+    subject.touch_out(5)
     expect(subject.balance).to eq(15)
   end
 
-  it 'is in journey' do
-    expect(subject).to respond_to(:in_journey?)
+  it 'in_use status changes to true after touching in' do
+    subject.top_up(5)
+    subject.touch_in(station)
+    expect(subject.in_journey?).to eq true
   end
 
-  it 'shows message not in journey when card not in use' do
-    expect(subject.in_journey?).to eq "Card not in use on journey"
+  it 'in_use status changes to false after touching out' do
+    subject.top_up(5)
+    subject.touch_in(station)
+    subject.touch_out(1)
+    expect(subject.in_journey?).to eq false
   end
-  
-  it 'shows message in journey when card in use' do
-    subject.touch_in
-    expect(subject.in_journey?).to eq "Card in use on journey"
-  end
-  
-  it 'is touched in' do
-    expect(subject.touch_in).to eq true
-  end
-  
-  it 'is not touched in' do
-    expect(subject.touch_out).to eq false
-  end
-  
+
   it 'default use status is that card is not in use' do
-    expect(subject.in_use).to eq false
+    expect(subject.in_journey?).to eq false
+  end
+
+  it 'raises an error when you try to touch in with 0 funds' do
+    expect{subject.touch_in(station)}.to raise_error "You do not have enough money to travel"
+  end
+
+  it 'deducts 1 from balance after completing journey' do
+    subject.top_up(5)
+    subject.touch_in(station)
+    expect{subject.touch_out(1)}.to change{subject.balance}.by(-1)
+  end
+
+  it 'records the station at which we touched in' do
+    subject.top_up(5)
+    subject.touch_in(station)
+    expect(subject.station).to eq station
+  end
+
+  it 'forgets the station after touching out' do
+    subject.top_up(5)
+    subject.touch_in(station)
+    subject.touch_out(1)
+    expect(subject.station).to eq nil
   end
 
 end
