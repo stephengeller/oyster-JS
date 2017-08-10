@@ -7,6 +7,7 @@ describe Oystercard do
   let(:station_B) { double :station_B }
   let(:station_C) { double :station_C }
   let(:station_D) { double :station_D }
+  # let(:MINIMUM_FARE) { double :1 }
 
   it 'is initialized with a balance of 0' do
     expect(subject.balance).to eq(0)
@@ -25,11 +26,11 @@ describe Oystercard do
     expect { subject.top_up(100) }.to raise_error 'unable to top up as balance would exceed maximum of £90'
   end
 
-  it 'balance has been reduced by 5' do
+  it 'balance has been reduced by min fare' do
     subject.top_up(20)
     subject.touch_in(station)
-    subject.touch_out(5, station)
-    expect(subject.balance).to eq(15)
+    subject.touch_out(station)
+    expect(subject.balance).to eq(19)
   end
 
   it 'in_use status changes to true after touching in' do
@@ -41,7 +42,7 @@ describe Oystercard do
   it 'in_use status changes to false after touching out' do
     subject.top_up(5)
     subject.touch_in(station)
-    subject.touch_out(1, station)
+    subject.touch_out(station)
     expect(subject.in_journey?).to eq false
   end
 
@@ -56,7 +57,7 @@ describe Oystercard do
   it 'deducts 1 from balance after completing journey' do
     subject.top_up(5)
     subject.touch_in(station)
-    expect { subject.touch_out(1, station) }.to change { subject.balance }.by(-1)
+    expect { subject.touch_out(station) }.to change { subject.balance }.by(-1)
   end
 
   it 'records the station at which we touched in' do
@@ -68,7 +69,7 @@ describe Oystercard do
   it 'forgets the journey after touching out' do
     subject.top_up(5)
     subject.touch_in(station)
-    subject.touch_out(1, station)
+    subject.touch_out(station)
     expect(subject.journey).to eq nil
   end
 
@@ -79,12 +80,26 @@ describe Oystercard do
   it 'shows trip history' do
     subject.top_up(5)
     subject.touch_in(station_A)
-    subject.touch_out(1, station_B)
+    subject.touch_out(station_B)
     subject.touch_in(station_C)
-    subject.touch_out(1, station_D)
+    subject.touch_out(station_D)
     expect(subject.journeys[0].entry_station).to eq(station_A)
     expect(subject.journeys[0].exit_station).to eq(station_B)
     expect(subject.journeys[1].entry_station).to eq(station_C)
     expect(subject.journeys[1].exit_station).to eq(station_D)
   end
+
+  it 'charges you a penalty fare if you forget to touch out' do
+    subject.top_up(20)
+    subject.touch_in(station_A)
+    subject.touch_in(station_B)
+    expect(subject.balance).to eq 14
+  end
+
+  it 'charges you a penalty fare if you forget to touch in' do
+    subject.top_up(20)
+    subject.touch_out(station_A)
+    expect(subject.balance).to eq 14
+  end
+
 end

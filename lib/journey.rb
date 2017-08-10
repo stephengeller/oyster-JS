@@ -12,24 +12,18 @@ class Journey
   end
 
   def fare
-    MINIMUM_FARE if (@entry_station || @exit_station).nil?
+    return MINIMUM_FARE unless (@entry_station.nil? || @exit_station.nil? )
     PENALTY_FARE
   end
 
-  def start(station)
-    @entry_station = station
-  end
+  # def start(station)
+  #   @entry_station = station
+  # end
 
-  def end(station)
-    save_journey(station)
-    @entry_station, @exit_station = nil, nil
-  end
+  # def end_journey
+  #   @entry_station, @exit_station = nil, nil
+  # end
 
-  def save_journey(station)
 
-  end
 
-  def in_journey?
-    !@entry_station.nil?
-  end
 end

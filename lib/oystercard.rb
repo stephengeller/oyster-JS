@@ -10,7 +10,6 @@ class Oystercard
     @balance = balance
     @max_balance = max_balance
     @journeys = []
-    @journey = Journey.new
   end
 
   def top_up(credit)
@@ -20,16 +19,20 @@ class Oystercard
 
   def touch_in(station)
     raise "You do not have enough money to travel" if @balance < 1
-    @entry_station = station
-    deduct(@journey.fare) unless @journey == nil
-    @journey.start(station)
+    deduct( @journey.fare) unless @journey.nil?
+    @journey = Journey.new(station)
   end
 
   def touch_out(station)
+    @journey = Journey.new if @journey.nil?
     @journey.exit_station = station
     @journeys << @journey
     deduct(@journey.fare)
-    @journey.end(station)
+    @journey = nil
+  end
+
+  def in_journey?
+    !@journey.nil?
   end
 
   private
@@ -37,5 +40,7 @@ class Oystercard
   def deduct(debit)
     @balance -= debit
   end
+
+
 
 end
