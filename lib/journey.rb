@@ -7,5 +7,4 @@ class Journey
     @entry_station = entry_station
   end
 
-
 end

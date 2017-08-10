@@ -2,7 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
   subject { described_class.new }
-  let(:station) {double :station}
+  let(:station) { double :station }
 
   it 'is initialized with a balance of 0' do
     expect(subject.balance).to eq(0)
@@ -46,13 +46,13 @@ describe Oystercard do
   end
 
   it 'raises an error when you try to touch in with 0 funds' do
-    expect{subject.touch_in(station)}.to raise_error "You do not have enough money to travel"
+    expect { subject.touch_in(station) }.to raise_error "You do not have enough money to travel"
   end
 
   it 'deducts 1 from balance after completing journey' do
     subject.top_up(5)
     subject.touch_in(station)
-    expect{subject.touch_out(1, station)}.to change{subject.balance}.by(-1)
+    expect { subject.touch_out(1, station) }.to change { subject.balance }.by(-1)
   end
 
   it 'records the station at which we touched in' do
@@ -76,7 +76,7 @@ describe Oystercard do
     subject.top_up(5)
     subject.touch_in(station)
     subject.touch_out(1, station)
-    expect(subject.history).to eq [{:entry_station => station, :exit_station => station}]
+    expect(subject.history).to eq [{ :entry_station => station, :exit_station => station }]
   end
 
 end

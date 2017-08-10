@@ -23,11 +23,12 @@ class Oystercard
   def touch_in(station)
     raise "You do not have enough money to travel" if @balance < 1
     @entry_station = station
+    @journeys 
   end
 
   def touch_out(fare = 1, station)
     @exit_station = station
-    @journeys << {:entry_station => @entry_station, :exit_station => @exit_station}
+    @journeys << { :entry_station => @entry_station, :exit_station => @exit_station }
     @entry_station = nil
     deduct(fare)
   end
@@ -44,9 +45,7 @@ class Oystercard
 
 end
 
-
-
-o =Oystercard.new
+o = Oystercard.new
 o.top_up(10)
 o.touch_in(:London)
 o.touch_in(:Bristol)
