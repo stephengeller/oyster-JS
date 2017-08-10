@@ -24,7 +24,7 @@ describe Oystercard do
   it 'balance has been reduced by 5' do
     subject.top_up(20)
     subject.touch_in(station)
-    subject.touch_out(5)
+    subject.touch_out(5, station)
     expect(subject.balance).to eq(15)
   end
 
@@ -37,7 +37,7 @@ describe Oystercard do
   it 'in_use status changes to false after touching out' do
     subject.top_up(5)
     subject.touch_in(station)
-    subject.touch_out(1)
+    subject.touch_out(1, station)
     expect(subject.in_journey?).to eq false
   end
 
@@ -52,20 +52,31 @@ describe Oystercard do
   it 'deducts 1 from balance after completing journey' do
     subject.top_up(5)
     subject.touch_in(station)
-    expect{subject.touch_out(1)}.to change{subject.balance}.by(-1)
+    expect{subject.touch_out(1, station)}.to change{subject.balance}.by(-1)
   end
 
   it 'records the station at which we touched in' do
     subject.top_up(5)
     subject.touch_in(station)
-    expect(subject.station).to eq station
+    expect(subject.entry_station).to eq station
   end
 
   it 'forgets the station after touching out' do
     subject.top_up(5)
     subject.touch_in(station)
-    subject.touch_out(1)
-    expect(subject.station).to eq nil
+    subject.touch_out(1, station)
+    expect(subject.entry_station).to eq nil
+  end
+
+  it 'has an empty trip history initially' do
+    expect(subject.history).to eq []
+  end
+
+  it 'shows trip history' do
+    subject.top_up(5)
+    subject.touch_in(station)
+    subject.touch_out(1, station)
+    expect(subject.history).to eq [{:entry_station => station, :exit_station => station}]
   end
 
 end

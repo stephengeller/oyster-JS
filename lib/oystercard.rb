@@ -1,12 +1,14 @@
+require './lib/journey.rb'
 class Oystercard
 
-  attr_reader :balance, :max_balance, :station
-
+  attr_reader :balance, :max_balance, :entry_station, :exit_station
+  PENALTY = 6
   DEFAULT_BALANCE = 0
   DEFAULT_MAX_BALANCE = 90
   def initialize(balance = DEFAULT_BALANCE, max_balance = DEFAULT_MAX_BALANCE)
     @balance = balance
     @max_balance = max_balance
+    @journeys = []
   end
 
   def top_up(credit)
@@ -14,29 +16,24 @@ class Oystercard
     @balance += credit
   end
 
-
-
   def in_journey?
-    @station != nil
+    @entry_station != nil
   end
-
-  # def in_journey?
-  #   if @in_use == false
-  #     "Card not in use on journey"
-  #   else
-  #     "Card in use on journey"
-  #   end
-  # end
 
   def touch_in(station)
     raise "You do not have enough money to travel" if @balance < 1
-    @station = station
+    @entry_station = station
   end
 
-  def touch_out(fare)
+  def touch_out(fare = 1, station)
+    @exit_station = station
+    @journeys << {:entry_station => @entry_station, :exit_station => @exit_station}
+    @entry_station = nil
     deduct(fare)
-    @station = nil
-    # "Card is not in use on journey"
+  end
+
+  def history
+    @journeys
   end
 
   private
@@ -46,3 +43,11 @@ class Oystercard
   end
 
 end
+
+
+
+o =Oystercard.new
+o.top_up(10)
+o.touch_in(:London)
+o.touch_in(:Bristol)
+puts o.balance
