@@ -1,15 +1,35 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/jenniferbacon/Documents/Coding/Makers/Week6/oyster/spec/journey_spec.rb": [
-
+      "/Users/stephengeller/Projects/makers-academy/week-two/day-4/oyster-JS/spec/journey_spec.rb": [
+        1,
+        null,
+        1,
+        null,
+        null
       ],
-      "/Users/jenniferbacon/Documents/Coding/Makers/Week6/oyster/spec/oystercard_spec.rb": [
+      "/Users/stephengeller/Projects/makers-academy/week-two/day-4/oyster-JS/lib/journey.rb": [
+        1,
+        null,
+        1,
+        1,
+        null,
+        1,
+        8,
+        null,
+        null,
+        null
+      ],
+      "/Users/stephengeller/Projects/makers-academy/week-two/day-4/oyster-JS/spec/oystercard_spec.rb": [
         1,
         null,
         1,
         15,
-        9,
+        8,
+        2,
+        2,
+        2,
+        2,
         null,
         1,
         1,
@@ -84,11 +104,15 @@
         1,
         1,
         1,
-        null,
+        1,
+        1,
+        1,
+        1,
+        1,
         null,
         null
       ],
-      "/Users/jenniferbacon/Documents/Coding/Makers/Week6/oyster/lib/oystercard.rb": [
+      "/Users/stephengeller/Projects/makers-academy/week-two/day-4/oyster-JS/lib/oystercard.rb": [
         1,
         1,
         null,
@@ -97,14 +121,14 @@
         1,
         1,
         1,
-        15,
-        15,
-        15,
+        14,
+        14,
+        14,
         null,
         null,
         1,
-        10,
         9,
+        8,
         null,
         null,
         1,
@@ -112,52 +136,28 @@
         null,
         null,
         1,
-        10,
         9,
-        9,
+        8,
+        8,
+        8,
         null,
         null,
         1,
-        5,
-        5,
-        5,
-        5,
-        null,
-        null,
-        1,
-        2,
+        6,
+        6,
+        6,
+        6,
         null,
         null,
         1,
         null,
         1,
-        5,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        1,
-        1,
-        1,
-        1,
-        1
-      ],
-      "/Users/jenniferbacon/Documents/Coding/Makers/Week6/oyster/lib/journey.rb": [
-        1,
-        null,
-        1,
-        1,
-        null,
-        1,
-        0,
-        null,
+        6,
         null,
         null,
         null
       ],
-      "/Users/jenniferbacon/Documents/Coding/Makers/Week6/oyster/spec/station_spec.rb": [
+      "/Users/stephengeller/Projects/makers-academy/week-two/day-4/oyster-JS/spec/station_spec.rb": [
         1,
         null,
         1,
@@ -170,7 +170,7 @@
         null,
         null
       ],
-      "/Users/jenniferbacon/Documents/Coding/Makers/Week6/oyster/lib/station.rb": [
+      "/Users/stephengeller/Projects/makers-academy/week-two/day-4/oyster-JS/lib/station.rb": [
         1,
         null,
         1,
@@ -183,6 +183,6 @@
         null
       ]
     },
-    "timestamp": 1502373926
+    "timestamp": 1502375834
   }
 }

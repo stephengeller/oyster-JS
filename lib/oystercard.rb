@@ -1,14 +1,16 @@
 require './lib/journey.rb'
 class Oystercard
 
-  attr_reader :balance, :max_balance, :entry_station, :exit_station
-  PENALTY = 6
+  attr_reader :balance, :max_balance, :journey, :journeys
+
   DEFAULT_BALANCE = 0
   DEFAULT_MAX_BALANCE = 90
+
   def initialize(balance = DEFAULT_BALANCE, max_balance = DEFAULT_MAX_BALANCE)
     @balance = balance
     @max_balance = max_balance
     @journeys = []
+    @journey = Journey.new
   end
 
   def top_up(credit)
@@ -16,25 +18,18 @@ class Oystercard
     @balance += credit
   end
 
-  def in_journey?
-    @entry_station != nil
-  end
-
   def touch_in(station)
     raise "You do not have enough money to travel" if @balance < 1
     @entry_station = station
-    @journeys 
+    deduct(@journey.fare) unless @journey == nil
+    @journey.start(station)
   end
 
-  def touch_out(fare = 1, station)
-    @exit_station = station
-    @journeys << { :entry_station => @entry_station, :exit_station => @exit_station }
-    @entry_station = nil
-    deduct(fare)
-  end
-
-  def history
-    @journeys
+  def touch_out(station)
+    @journey.exit_station = station
+    @journeys << @journey
+    deduct(@journey.fare)
+    @journey.end(station)
   end
 
   private
@@ -44,9 +39,3 @@ class Oystercard
   end
 
 end
-
-o = Oystercard.new
-o.top_up(10)
-o.touch_in(:London)
-o.touch_in(:Bristol)
-puts o.balance
